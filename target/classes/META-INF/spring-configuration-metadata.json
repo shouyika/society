@@ -1,0 +1,112 @@
+{
+  "hints": [],
+  "groups": [
+    {
+      "sourceType": "com.ykshou.society.configuration.CustomDatasource",
+      "name": "society.datasource",
+      "type": "com.ykshou.society.configuration.CustomDatasource"
+    }
+  ],
+  "properties": [
+    {
+      "sourceType": "com.ykshou.society.configuration.CustomDatasource",
+      "name": "society.datasource.db-type",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.ykshou.society.configuration.CustomDatasource",
+      "name": "society.datasource.default-transaction-isolation",
+      "type": "java.lang.Integer"
+    },
+    {
+      "sourceType": "com.ykshou.society.configuration.CustomDatasource",
+      "name": "society.datasource.driver-class-name",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.ykshou.society.configuration.CustomDatasource",
+      "name": "society.datasource.filters",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.ykshou.society.configuration.CustomDatasource",
+      "name": "society.datasource.initial-size",
+      "type": "java.lang.Integer"
+    },
+    {
+      "sourceType": "com.ykshou.society.configuration.CustomDatasource",
+      "name": "society.datasource.log-abandoned",
+      "type": "java.lang.Boolean"
+    },
+    {
+      "sourceType": "com.ykshou.society.configuration.CustomDatasource",
+      "name": "society.datasource.max-active",
+      "type": "java.lang.Integer"
+    },
+    {
+      "sourceType": "com.ykshou.society.configuration.CustomDatasource",
+      "name": "society.datasource.max-wait",
+      "type": "java.lang.Integer"
+    },
+    {
+      "sourceType": "com.ykshou.society.configuration.CustomDatasource",
+      "name": "society.datasource.min-idle",
+      "type": "java.lang.Integer"
+    },
+    {
+      "sourceType": "com.ykshou.society.configuration.CustomDatasource",
+      "name": "society.datasource.name",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.ykshou.society.configuration.CustomDatasource",
+      "name": "society.datasource.password",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.ykshou.society.configuration.CustomDatasource",
+      "name": "society.datasource.remove-abandoned",
+      "type": "java.lang.Boolean"
+    },
+    {
+      "sourceType": "com.ykshou.society.configuration.CustomDatasource",
+      "name": "society.datasource.remove-abandoned-timeout",
+      "type": "java.lang.Long"
+    },
+    {
+      "sourceType": "com.ykshou.society.configuration.CustomDatasource",
+      "name": "society.datasource.test-on-borrow",
+      "type": "java.lang.Boolean"
+    },
+    {
+      "sourceType": "com.ykshou.society.configuration.CustomDatasource",
+      "name": "society.datasource.test-on-return",
+      "type": "java.lang.Boolean"
+    },
+    {
+      "sourceType": "com.ykshou.society.configuration.CustomDatasource",
+      "name": "society.datasource.test-while-idle",
+      "type": "java.lang.Boolean"
+    },
+    {
+      "sourceType": "com.ykshou.society.configuration.CustomDatasource",
+      "name": "society.datasource.time-between-eviction-runs-millis",
+      "type": "java.lang.Long"
+    },
+    {
+      "sourceType": "com.ykshou.society.configuration.CustomDatasource",
+      "name": "society.datasource.url",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.ykshou.society.configuration.CustomDatasource",
+      "name": "society.datasource.username",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.ykshou.society.configuration.CustomDatasource",
+      "name": "society.datasource.validation-query",
+      "type": "java.lang.String"
+    }
+  ]
+}

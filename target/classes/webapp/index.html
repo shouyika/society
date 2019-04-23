@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="css/common.css"/>
+    <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <title>果聊</title>
+</head>
+<body class="total_index" >
+    <div class="modal fade" tabindex="-1" role="dialog" id="registerModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">注册</h4>
+                </div>
+                <div class="modal-body">
+                    <p>One fine body&hellip;</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="doRegister">注册</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+
+    <div class="center_container in_cm_block">
+        <h1 class="login_title">登陆果聊</h1>
+        <div class="login_input_group">
+            <input type="text" id="in_user" class="form-control login_input_user" placeholder="账号" />
+            <input type="text" id="in_pwd" class="form-control login_input_pwd" placeholder="密码" />
+        </div>
+        <div class="login_btn_container">
+            <button id="btn_login" type="button" class="btn btn-primary login_btn_sz">登陆</button>
+        </div>
+        <div class="login_btn_container">
+            <button id="btn_register" type="button" class="btn btn-warning login_btn_sz">注册</button>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $("#btn_login").click(function() {
+            $.get("http://www.baidu.com",
+                    {
+
+                    },
+                    function(data, status) {
+
+                    });
+        });
+        $("#btn_register").click(function() {
+            $("#registerModal").modal({
+                backdrop: false
+            })
+        });
+        $("#doRegister").click(function() {
+            $("#registerModal").modal('hide');
+        });
+    </script>
+</body>
+</html>
