@@ -41,9 +41,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 return false;
             }
         };
-        auth.authenticationProvider()
-                .inMemoryAuthentication()
-                .withUser("user").password("password").roles("USER");
+//        auth.authenticationProvider()
+//                .inMemoryAuthentication()
+//                .withUser("user").password("password").roles("USER");
     }
 
     @Bean
@@ -52,11 +52,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return new ExceptionTranslationFilter(loginEntryPoint);
     }
 
-    @Bean
-    public UsernamePasswordAuthenticationFilter usernamePasswordAuthenticationFilter() {
-        UsernamePasswordAuthenticationFilter usernamePasswordAuthenticationFilter = new UsernamePasswordAuthenticationFilter();
-
-        return usernamePasswordAuthenticationFilter;
-    }
+//    @Bean
+//    public UsernamePasswordAuthenticationFilter usernamePasswordAuthenticationFilter() {
+//        return new UsernamePasswordAuthenticationFilter();
+//    }
 }
 
