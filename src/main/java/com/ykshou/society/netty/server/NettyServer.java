@@ -2,7 +2,10 @@ package com.ykshou.society.netty.server;
 
 import com.ykshou.society.netty.handler.WebSocketServerHandler;
 import io.netty.bootstrap.ServerBootstrap;
+import io.netty.buffer.ByteBufAllocator;
+import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
@@ -29,9 +32,8 @@ public class NettyServer {
                     protected void initChannel(SocketChannel ch) throws Exception {
                         ch.pipeline().addLast(new HttpServerCodec())
                                 .addLast(new HttpObjectAggregator(65536))
-                                .addLast(new WebSocketServerHandler())
                                 .addLast(new WebSocketServerCompressionHandler())
-                                .addLast(new WebSocketServerProtocolHandler("", null, true))
+                                .addLast(new WebSocketServerProtocolHandler("/", null, true))
                                 .addLast(new WebSocketServerHandler());
                     }
                 });
