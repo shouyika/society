@@ -11,6 +11,7 @@ import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import io.netty.handler.codec.http.websocketx.extensions.compression.WebSocketServerCompressionHandler;
+import io.netty.handler.timeout.IdleStateHandler;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -28,7 +29,7 @@ public class NettyServer {
                 .childHandler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
-                        ch.pipeline().addLast(new HttpServerCodec())
+                        ch.pipeline().addLast(new IdleStateHandler(60, 0, 0)).addLast(new HttpServerCodec())
                                 .addLast(new HttpObjectAggregator(65536))
                                 .addLast(new WebSocketServerCompressionHandler())
                                 .addLast(new WebSocketServerProtocolHandler("/", null, true))

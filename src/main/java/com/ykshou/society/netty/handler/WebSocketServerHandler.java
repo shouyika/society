@@ -10,8 +10,11 @@ import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpUtil;
+import io.netty.handler.codec.http.websocketx.CloseWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketFrame;
+import io.netty.handler.timeout.IdleState;
+import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.util.CharsetUtil;
 
 import java.util.Date;
@@ -44,9 +47,7 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler {
                 Enumeration<ChannelHandlerContext> contexts = CONNECTION_MAP.elements();
                 while (contexts.hasMoreElements()) {
                     ChannelHandlerContext context = contexts.nextElement();
-                    context.executor().execute(() -> {
-                        context.channel().writeAndFlush(new TextWebSocketFrame("每十秒通知一下"));
-                    });
+                    context.writeAndFlush(new TextWebSocketFrame("每十秒通知一下"));
                 }
             }
         }, new Date(), 10000L);
@@ -187,6 +188,17 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler {
     @Override
     public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
         destroy(ctx);
+    }
+
+    @Override
+    public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
+        super.userEventTriggered(ctx, evt);
+        if (evt instanceof IdleStateEvent) {
+            if (((IdleStateEvent) evt).state() == IdleState.READER_IDLE) {
+                ctx.writeAndFlush(new CloseWebSocketFrame(200, "闲置过久"))
+                        .addListener(ChannelFutureListener.CLOSE);
+            }
+        }
     }
 
     private void init(ChannelHandlerContext ctx) {
