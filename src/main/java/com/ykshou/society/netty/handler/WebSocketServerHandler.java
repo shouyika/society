@@ -10,13 +10,15 @@ import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpUtil;
-import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketFrame;
-import io.netty.handler.codec.http.websocketx.WebSocketServerHandshaker;
 import io.netty.util.CharsetUtil;
 
-import java.io.UnsupportedEncodingException;
+import java.util.Date;
+import java.util.Enumeration;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static io.netty.handler.codec.http.HttpHeaderNames.CONNECTION;
 import static io.netty.handler.codec.http.HttpHeaderValues.CLOSE;
@@ -29,6 +31,28 @@ import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 
 
 public class WebSocketServerHandler extends SimpleChannelInboundHandler {
+
+    private static final Timer timer;
+
+    private static final ConcurrentHashMap<String, ChannelHandlerContext> CONNECTION_MAP = new ConcurrentHashMap<>();
+
+    static {
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                Enumeration<ChannelHandlerContext> contexts = CONNECTION_MAP.elements();
+                while (contexts.hasMoreElements()) {
+                    ChannelHandlerContext context = contexts.nextElement();
+                    context.executor().execute(() -> {
+                        context.channel().writeAndFlush(new TextWebSocketFrame("每十秒通知一下"));
+                    });
+                }
+            }
+        }, new Date(), 10000L);
+    }
+
+    private byte state; // 0 - none, 1 - initialized, 2 - destroyed
 
     private static void sendHttpResponse(
             ChannelHandlerContext ctx, FullHttpRequest req, FullHttpResponse res) {
@@ -128,7 +152,57 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler {
     }
 
     @Override
-    public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
-        super.handlerRemoved(ctx);
+    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        init(ctx);
+        super.channelActive(ctx);
     }
+
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        destroy(ctx);
+        super.channelInactive(ctx);
+    }
+
+    @Override
+    public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
+        if (ctx.channel().isActive()) {
+            init(ctx);
+        }
+        super.channelRegistered(ctx);
+    }
+
+    @Override
+    public void channelUnregistered(ChannelHandlerContext ctx) throws Exception {
+        destroy(ctx);
+        super.channelUnregistered(ctx);
+    }
+
+    @Override
+    public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
+        if (ctx.channel().isActive() && ctx.channel().isRegistered()) {
+            init(ctx);
+        }
+    }
+
+    @Override
+    public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
+        destroy(ctx);
+    }
+
+    private void init(ChannelHandlerContext ctx) {
+        if (state != 0) {
+            return;
+        }
+        state = 1;
+        CONNECTION_MAP.put(ctx.channel().id().asLongText(), ctx);
+    }
+
+    private void destroy(ChannelHandlerContext ctx) {
+        if (state != 1) {
+            return;
+        }
+        state = 2;
+        CONNECTION_MAP.remove(ctx.channel().id().asLongText());
+    }
+
 }

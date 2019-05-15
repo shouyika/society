@@ -2,10 +2,7 @@ package com.ykshou.society.netty.server;
 
 import com.ykshou.society.netty.handler.WebSocketServerHandler;
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.buffer.ByteBufAllocator;
-import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.ChannelInitializer;
-import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
@@ -20,6 +17,7 @@ import javax.annotation.PostConstruct;
 
 @Service
 public class NettyServer {
+
     @PostConstruct
     public void init() {
         EventLoopGroup bossGroup = new NioEventLoopGroup();
