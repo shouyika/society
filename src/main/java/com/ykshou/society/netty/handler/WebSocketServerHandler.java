@@ -5,6 +5,7 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.handler.codec.UnsupportedMessageTypeException;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
@@ -108,23 +109,16 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler {
     }
 
     private void handleWebSocketFrame(ChannelHandlerContext ctx, WebSocketFrame frame) {
-        ctx.close();
         if (frame instanceof TextWebSocketFrame) {
             // Echo the frame
-            byte[] bytes = new byte[frame.content().readableBytes()];
-            frame.content().readBytes(bytes);
-            try {
-                System.out.println(new String(bytes, "UTF-8"));
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-            ctx.write(frame.retain());
+            ctx.write(new TextWebSocketFrame(((TextWebSocketFrame) frame).text()));
             return;
         }
-        if (frame instanceof BinaryWebSocketFrame) {
-            // Echo the frame
-            ctx.write(frame.retain());
-        }
+        throw new UnsupportedMessageTypeException("消息" + frame.getClass() + "不支持");
+//        if (frame instanceof BinaryWebSocketFrame) {
+//            // Echo the frame
+//            ctx.write(frame.retain());
+//        }
     }
 
     @Override
