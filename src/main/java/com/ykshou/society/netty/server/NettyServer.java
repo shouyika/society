@@ -29,7 +29,8 @@ public class NettyServer {
                 .childHandler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
-                        ch.pipeline().addLast(new IdleStateHandler(60, 0, 0)).addLast(new HttpServerCodec())
+                        ch.pipeline().addLast(new IdleStateHandler(60, 0, 0))
+                                .addLast(new HttpServerCodec())
                                 .addLast(new HttpObjectAggregator(65536))
                                 .addLast(new WebSocketServerCompressionHandler())
                                 .addLast(new WebSocketServerProtocolHandler("/", null, true))
